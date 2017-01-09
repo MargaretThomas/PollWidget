@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<head>
+	<title>Poll Widget</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> 
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+	<script src="controllers/widgetController.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/styles.css" /> 
+</head>
+<body ng-app="widgetApp">
+	<a href="#/firstState">First State</a> <br>
+	<a href="#/secondState">Second State</a> <br>
+	<a href="#/thirdState">Third State</a> <br>
+	
+	<!-- Placeholder for the different states of the poll. -->
+	<div ng-view></div>
+</body>
+</html>
