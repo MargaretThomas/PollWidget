@@ -1,11 +1,32 @@
-body{
-	background-color: #E6E6E6;
+/* Styling for parent widget */
+#mainBody{
+	background-color: #E6A8D0;
 }
 
-p{
-	color: blue;
+/* Styling for the widget */
+#widgetBody{
+	background-color: #FFE6CC; /* Light Orange */
+	/* background-color: #E85D22; */ /* Dark Orange */
 }
-
-h2 {
-    visibility: hidden;
+.option{
+	background-color: #E85D22;
+	display: block;
+	border-radius: 12px;
+	border: none;
+	text-align: center;
+	text-decoration: none;
+	font-size: 20px;
+	margin: 5px auto 5px auto;
+	color: #FFF;
+	padding: 5px;
+}
+#totalVotes{
+	margin: auto;
+}
+#timeLeft{
+	margin: auto;
+}
+h1, h2, h3, h4{
+	font-weight: bold;
+	color: #000; 
 }
