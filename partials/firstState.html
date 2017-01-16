@@ -1,11 +1,11 @@
 <div ng-controller="loadWidget" ng-init="loadOpenPoll()">
-	<h2>{{pollTitle}}</h2>
-	<h4>Question: {{pollQuestion}}</h4>
-	<div id="divAnswers">
-		<button class="option" id="0" ng-click="castVote('Carrots')">Carrots</button>
-		<button class="option" id="1" ng-click="castVote('Kale')">Kale</button>
-		<button class="option" id="2" ng-click="castVote('Cabbage')">Cabbage</button>
-	</div>
-	<p id="totalVotes">{{totalVotes}} people voted</p>
-	<p id="timeLeft">{{timeLeft}} hours remaining</p>
+<h2>{{pollTitle}}</h2>
+<h4>Question: {{pollQuestion}}</h4>
+<div id="divAnswers">
+<button class="option" id="0" ng-click="castVote('Carrots')">Carrots</button>
+<button class="option" id="1" ng-click="castVote('Kale')">Kale</button>
+<button class="option" id="2" ng-click="castVote('Cabbage')">Cabbage</button>
+</div>
+<p id="totalVotes">{{totalVotes}} people voted</p>
+<p id="timeLeft">{{timeLeft}} hours remaining</p>
 </div>

@@ -1,6 +1,5 @@
 var app = angular.module("widgetApp", ["ui.router"])
-app.config(function($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise("/firstState");
+app.config(function($stateProvider) {
     $stateProvider
     .state("first", {
 		url: "/firstState",
@@ -9,12 +8,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	.state("second", {
 		url: "/secondState",
 		templateUrl: "partials/secondState.html"
-		
 	})
 	.state("third", {
 		url: "/thirdState",
 		templateUrl: "partials/thirdState.html"
-	});	
+	});
 });
 
 app.controller('loadWidget', function($scope){

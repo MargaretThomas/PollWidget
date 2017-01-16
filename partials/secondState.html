@@ -1,13 +1,13 @@
 <div ng-controller="loadWidget" ng-init="loadSecondState()">
-	<h2>{{pollTitle}}</h2>
-	<h3>{{thanksMessage}}</h3>
-	<h4>Question: {{pollQuestion}}</h4>
-	<div id="answers" ng-init="readVote()">
-		<p>You selected: {{chosenAnswer}}</p>
-		<button class="option">Carrots</button>
-		<button class="option">Kale</button>
-		<button class="option">Cabbage</button>
-	</div>
-	<p>{{totalVotes}} people voted</p>
-	<p>{{timeLeft}} hours remaining</p>
+<h2>{{pollTitle}}</h2>
+<h3>{{thanksMessage}}</h3>
+<h4>Question: {{pollQuestion}}</h4>
+<div id="answers" ng-init="readVote()">
+<p>You selected: {{chosenAnswer}}</p>
+<button class="option">Carrots</button>
+<button class="option">Kale</button>
+<button class="option">Cabbage</button>
+</div>
+<p>{{totalVotes}} people voted</p>
+<p>{{timeLeft}} hours remaining</p>
 </div>
