@@ -3,16 +3,16 @@
 <head>
 	<title>Poll Widget</title>
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> 
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+	<script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
 	<script src="controllers/widgetController.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/styles.css" /> 
 </head>
 <body ng-app="widgetApp" id="widgetBody" ng-controller="loadWidget" ng-init="loadOpenPoll()">
 	<!-- Placeholder for the different states of the poll. -->
-	<div ng-view></div>
+	<div ui-view></div>
 	</br>
-	<a href="#/firstState">First State</a> <br>
-	<a href="#/secondState">Second State</a> <br>
-	<a href="#/thirdState">Third State</a> <br>
+	<a ui-sref="first">First State</a> <br>
+	<a ui-sref="second">Second State</a> <br>
+	<a ui-sref="third">Third State</a> <br>
 </body>
 </html>

@@ -1,18 +1,18 @@
-var app = angular.module("widgetApp", ["ngRoute"])
-app.config(function($routeProvider) {
-    $routeProvider
-    .when("/firstState", {
+var app = angular.module("widgetApp", ["ui.router"])
+app.config(function($stateProvider) {
+    $stateProvider
+    .state("first", {
+		url: "/firstState",
         templateUrl : "partials/firstState.html"
     })
-	.when("/secondState", {
+	.state("second", {
+		url: "/secondState",
 		templateUrl: "partials/secondState.html"
 	})
-	.when("/thirdState", {
+	.state("third", {
+		url: "/thirdState",
 		templateUrl: "partials/thirdState.html"
-	})
-	.otherwise("/firstState", {
-        templateUrl : "partials/firstState.html"
-    });
+	});
 });
 
 app.controller('loadWidget', function($scope){
@@ -90,7 +90,7 @@ app.controller('loadWidget', function($scope){
 	}
 	// Read stuff from the coooookie.
 	$scope.readVote = function(){
-		// Check if there's a status cookie.
+		// Check if there is a status cookie.
 		if(document.cookie.indexOf("status") != -1){
 			$scope.pollStatus = $scope.getCookie("status");
 			$scope.pollID = $scope.getCookie("id");
