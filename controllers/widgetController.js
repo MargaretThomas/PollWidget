@@ -1,17 +1,18 @@
 var app = angular.module("widgetApp", ["ui.router"])
-app.config(function($stateProvider) {
+app.config(function($stateProvider, $urlRouterProvider) {
+	$urlRouterProvider.otherwise('/firstState');
     $stateProvider
     .state("first", {
 		url: "/firstState",
-        templateUrl : "partials/firstState.html"
+        templateUrl : "templates/firstState.html"
     })
 	.state("second", {
 		url: "/secondState",
-		templateUrl: "partials/secondState.html"
+		templateUrl: "templates/secondState.html"
 	})
 	.state("third", {
 		url: "/thirdState",
-		templateUrl: "partials/thirdState.html"
+		templateUrl: "templates/thirdState.html"
 	});
 });
 
