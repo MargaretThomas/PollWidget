@@ -1,12 +1,15 @@
-<div ng-controller="loadWidget" ng-init="loadThirdState()">
-	<h2>{{pollTitle}}</h2>
-	<h3>{{closedMessage}}</h3>
-	<h4>Question: {{pollQuestion}}</h4>
-	<div id="answers" ng-init="readVote()">
+<div ng-controller="loadWidget" ng-init="loadState()">
+	<h2>{{poll.title}}</h2>
+	<h3>{{poll.closedMessage}}</h3>
+	<h4>Question: {{poll.question}}</h4>
 		<p>You selected: {{chosenAnswer}}</p>
-		<button class="option">Carrots</button>
-		<button class="option">Kale</button>
-		<button class="option">Cabbage</button>
-	</div>
-	<p>{{totalVotes}} people voted</p>
+	<table>
+		<th>Answers</th>
+		<th>Percentages</th>
+		<tr ng-repeat="item in answers">
+			<td>{{ item[0] }}</td>
+			<td>{{ formatNumber(item[1]/poll.totalVotes*100) }}%</td>
+		</tr>
+	</table>
+	<p>{{poll.totalVotes}} people voted</p>
 </div>
