@@ -65,13 +65,13 @@ app.directive("answers", function($state) {
 		scope:{
 			data: "=" // Current answer.
 		},
-        templateUrl: "button.html",
+        templateUrl: "templates/button.html",
 		link: function(scope, elem, attrs){
 			elem.bind('click', function(){
 				// Save poll information once the user has voted.
 				var poll = JSON.parse(localStorage.getItem("poll"));
 				poll.totalVotes++;
-				
+				poll.pollStatus = "Open And Voted";
 				var answers = JSON.parse(localStorage.getItem("answers"));
 				for(var item in answers){
 					var singleAnswer = answers[item];
