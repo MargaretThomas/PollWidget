@@ -17,15 +17,20 @@ app.config(function($stateProvider) {
 app.controller('loadWidget', function($scope, $state){
 	// Determine the state of the widget to display.
 	$scope.determineState = function(){
-		var pollDetails = JSON.parse(localStorage.getItem("poll"));
-		var pollStatus = pollDetails.pollStatus;
-		console.log(pollStatus);
-		if(pollStatus == "Open And Voted"){
-			$state.go("second");
-		} else if(pollStatus == "Closed"){
-			$state.go("third");
-		}else{
+		var poll = localStorage.getItem("poll");
+		if(poll === undefined){
 			$state.go("first");
+		}else{
+			var pollDetails = JSON.parse(poll);
+			var pollStatus = pollDetails.pollStatus;
+			console.log(pollStatus);
+			if(pollStatus == "Open And Voted"){
+				$state.go("second");
+			} else if(pollStatus == "Closed"){
+				$state.go("third");
+			}else{
+				$state.go("first");
+			}
 		}
 	}
 	// Request data and display in the poll format.
