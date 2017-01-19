@@ -31,7 +31,7 @@ app.controller('loadWidget', function($scope, $state){
 	// Request data and display in the poll format.
 	$scope.loadOpenPoll = function(){
 		// Dummy content for now. Here is where the the API request will be made.
-		var data = {pollStatus:"Open", pollID:"1", title:"Favourite Vegetable", question:"What is your favourite veggie?", answerCount:3, totalVotes:20, timeLeft:"24:00", thanksMessage:"Thanks for participating in the Favourite Vegetable Poll!!", closedMessage:"The poll is now closed", websiteForSharing:"www.google.com"};
+		var data = {pollStatus:"Open", pollID:"1", title:"Favourite Vegetable", question:"What is your favourite veggie?", answerCount:3, totalVotes:20, endDate:"2017-01-19T16:30:00Z", thanksMessage:"Thanks for participating in the Favourite Vegetable Poll!!", closedMessage:"The poll is now closed", websiteForSharing:"www.google.com"};
 		var answers = [["Carrots",10], ["Kale",6], ["Cabbage", 4]];
 		
 		// Load stuff from dummy API.
@@ -57,35 +57,4 @@ app.controller('loadWidget', function($scope, $state){
 	$scope.formatNumber = function(votes) {
 		return Math.round(votes); 
 	}
-});
-// Creates a button for each answers of the poll.
-app.directive("answers", function($state) {
-    return {
-		restrict: "E",
-		scope:{
-			data: "=" // Current answer.
-		},
-        templateUrl: "templates/button.html",
-		link: function(scope, elem, attrs){
-			elem.bind('click', function(){
-				// Save poll information once the user has voted.
-				var poll = JSON.parse(localStorage.getItem("poll"));
-				poll.totalVotes++;
-				poll.pollStatus = "Open And Voted";
-				var answers = JSON.parse(localStorage.getItem("answers"));
-				for(var item in answers){
-					var singleAnswer = answers[item];
-					if(singleAnswer[0] == scope.data){
-						singleAnswer[1]++;
-					}
-				}
-				
-				localStorage.setItem("poll", JSON.stringify(poll));
-				localStorage.setItem("answers", JSON.stringify(answers));
-				localStorage.setItem("chosenAnswer", scope.data);
-				
-				$state.go("second");
-			});
-		}
-    };
 });
