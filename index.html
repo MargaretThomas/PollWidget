@@ -6,13 +6,13 @@
 	<script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/ngstorage/0.3.6/ngStorage.min.js"></script>
 	<script src="controllers/widgetController.js"></script>
-	<script src="directives/widgetDirectives.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/styles.css" /> 
+	<script src="directives/widgetDirectives.js"></script> 
 </head>
-<body ng-app="widgetApp" id="widgetBody" ng-controller="loadWidget" ng-init="determineState()">
+<body ng-app="widgetApp" id="southpollWidgetBody" ng-controller="loadWidget" ng-init="determineState()" style="background-color: #FFE6CC">
 	<!-- Placeholder for the different states of the poll. -->
 	<div ui-view></div>
 	<br/>
+	<!-- Hacking links, Just for testing -->
 	<a ui-sref="first">First State</a> <br>
 	<a ui-sref="second">Second State</a> <br>
 	<a ui-sref="third">Third State</a> <br>

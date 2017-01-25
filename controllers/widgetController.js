@@ -18,10 +18,8 @@ app.controller('loadWidget', function($scope, $state){
 	// Determine the state of the widget to display.
 	$scope.determineState = function(){
 		var poll = localStorage.getItem("poll");
-		if(poll === undefined){
-			$state.go("first");
-		}else{
-			var pollDetails = JSON.parse(poll);
+		if(poll){
+            var pollDetails = JSON.parse(poll);
 			var pollStatus = pollDetails.pollStatus;
 			console.log(pollStatus);
 			if(pollStatus == "Open And Voted"){
@@ -31,12 +29,14 @@ app.controller('loadWidget', function($scope, $state){
 			}else{
 				$state.go("first");
 			}
+		}else{
+			$state.go("first");
 		}
 	}
 	// Request data and display in the poll format.
 	$scope.loadOpenPoll = function(){
 		// Dummy content for now. Here is where the the API request will be made.
-		var data = {pollStatus:"Open", pollID:"1", title:"Favourite Vegetable", question:"What is your favourite veggie?", answerCount:3, totalVotes:20, endDate:"2017-01-19T16:30:00Z", thanksMessage:"Thanks for participating in the Favourite Vegetable Poll!!", closedMessage:"The poll is now closed", websiteForSharing:"www.google.com"};
+		var data = {pollStatus:"Open", pollID:"1", title:"Favourite Vegetable", question:"What is your favourite veggie?", answerCount:3, totalVotes:20, endDate:"2017-02-19T16:30:00Z", thanksMessage:"Thanks for participating in the Favourite Vegetable Poll!!", closedMessage:"The poll is now closed", websiteForSharing:"www.google.com"};
 		var answers = [["Carrots",10], ["Kale",6], ["Cabbage", 4]];
 		
 		// Load stuff from dummy API.
@@ -61,5 +61,6 @@ app.controller('loadWidget', function($scope, $state){
 	}
 	$scope.formatNumber = function(votes) {
 		return Math.round(votes); 
+		//return votes;
 	}
 });
