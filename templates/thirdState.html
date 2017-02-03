@@ -1,17 +1,19 @@
 <!-- SouthPoll as sp -->
 <div id="sp-ThirdState" ng-controller="loadWidget" ng-init="loadState()">
 	<!-- ThirdState as ts -->
-	<h2 id="ts-h2" style="font-weight: bold;color: #000;">{{poll.title}}</h2>
-	<h3 id="ts-h3" style="font-weight: bold;color: #000;">{{poll.closedMessage}}</h3>
+	<h2 id="ts-h2" style="font-weight: bold;color: #000;">{{poll.poll_title}}</h2>
+	<h3 id="ts-h3" style="font-weight: bold;color: #000;">{{poll.closed_message}}</h3>
 	<h4 id="ts-h4" style="font-weight: bold;color: #000;">Question: {{poll.question}}</h4>
 	<p id="ts-SelectedAnswer" >You selected: {{chosenAnswer}}</p>
 	<table id="ts-table" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; width: 50px;height: 50px;border-radius: 6px;">
 		<th id="ts-th1" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; background-color: #E85D22;">Answers</th>
-		<th id="ts-th2" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; background-color: #E85D22;">Percentages</th>
-		<tr id="ts-tr" ng-repeat="item in answers" style="background-color: #FFF;">
-			<td id="ts-td1" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ item[0] }}</td>
-			<td id="ts-td2" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ formatNumber(item[1]/poll.totalVotes*100) }}%</td>
+		<th id="ts-th2" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; background-color: #E85D22;">Count</th>
+		<th id="ts-th3" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; background-color: #E85D22;">Percentages</th>
+		<tr id="ts-tr" ng-repeat="item in answersID" style="background-color: #FFF;">
+			<td id="ts-td1" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ answers[item - 1] }}</td>
+			<td id="ts-td2" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ answersCount[item - 1] }}</td>
+			<td id="ts-td3" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ formatNumber(answersCount[item - 1]/totalVotes*100) }}%</td>
 		</tr>
 	</table>
-	<p id="ts-totalVotes">{{poll.totalVotes}} people voted</p>
+	<p id="ts-totalVotes">{{totalVotes}} people voted</p>
 </div>

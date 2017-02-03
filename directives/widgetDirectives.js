@@ -10,20 +10,25 @@ app.directive("answers", function($state) {
 			elem.bind('click', function(){
 				// Save poll information once the user has voted.
 				var poll = JSON.parse(localStorage.getItem("poll"));
-				poll.totalVotes++;
-				poll.pollStatus = "Open And Voted";
+				poll.status = "2";
 				var answers = JSON.parse(localStorage.getItem("answers"));
+				var answersCount = JSON.parse(localStorage.getItem("answersCount"));
+				var totalVotes = 0;
 				for(var item in answers){
 					var singleAnswer = answers[item];
-					if(singleAnswer[0] == scope.data){
-						singleAnswer[1]++;
+					if(singleAnswer == scope.data){
+						answersCount[item]++;
 					}
 				}
-				
+				for(var index=0;index<answersCount.length;index++){
+					totalVotes = totalVotes + answersCount[index];
+				}
+				localStorage.setItem("totalVotes", totalVotes);
 				localStorage.setItem("poll", JSON.stringify(poll));
 				localStorage.setItem("answers", JSON.stringify(answers));
+				localStorage.setItem("answersCount", JSON.stringify(answersCount));
 				localStorage.setItem("chosenAnswer", scope.data);
-				
+				localStorage.setItem("totalVotes", totalVotes);
 				$state.go("second");
 			});
 		}
@@ -38,11 +43,23 @@ app.directive('timeLeft', ['$interval', 'dateFilter', '$state', function($interv
 		var timeoutId;
 		
 		var poll = JSON.parse(localStorage.getItem("poll"));
-		var endDate = new Date(poll.endDate);
-		
+		var endDate = new Date(poll.end_date);
+		var endDateStr = endDate.toString();
+		var actualEndDate;
+		var extraHours;
+		var hoursInMinutes;
+		// Extract the time difference.
+		if(endDateStr.indexOf("+") != -1){
+			var dateParts = endDateStr.split("+");
+			actualEndDate = dateParts[0];
+			extraHours = parseInt(dateParts[1].substring(0,2));
+		} else{
+			var dateParts = endDateStr.split("-");
+			actualEndDate = dateParts[0];
+			extraHours = parseInt(dateParts[1].substring(0,2));
+		}
 		function updateTime() {
 			var currentDate = new Date();
-			var extraHours = Math.abs(currentDate.getTimezoneOffset()/60);
 			currentDate.setHours(currentDate.getHours() + extraHours);
 			// Calculate the difference in milliseconds
 			var difference_ms = endDate.getTime() - currentDate.getTime();
