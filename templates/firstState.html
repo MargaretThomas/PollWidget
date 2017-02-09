@@ -2,9 +2,11 @@
 	<h2 id="fs-h2" style="font-weight: bold;color: #000;">{{poll.poll_title}}</h2>
 	<h4 id="fs-h4" style="font-weight: bold;color: #000;">Question: {{poll.poll_description}}</h4>
 	<div id="fs-div" ng-repeat="x in answers">
-		<answers data="x"></answers>
+		<answers data="x" ansID="$index"></answers>
 	</div>
 	<p id="votesParagraph">{{totalVotes}} people voted</p>
 	<p id="timeParagraph">Time Remaining:</p>
-	<time-left></time-left>
+	<div id="loadingTime" ng-init="loadTime()">
+		<time-left></time-left>
+	</div>
 </div>

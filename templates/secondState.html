@@ -10,11 +10,11 @@
 		<th id="ss-th2" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; background-color: #E85D22; color: #FFF">Count</th>
 		<th id="ss-th3" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; background-color: #E85D22; color: #FFF">Percentages</th>
 		<tr id="ss-tr" ng-repeat="item in answersID" style="background-color: #FFE6CC;">
-			<td id="ss-td1" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ answers[item - 1] }}</td>
-			<td id="ss-td2" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ answersCount[item - 1] }}</td>
-			<td id="ss-td3" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ formatNumber(answersCount[item - 1]/totalVotes*100) }}%</td>
+			<td id="ss-td1" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ answers[$index] }}</td>
+			<td id="ss-td2" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ answersCount[i$index] }}</td>
+			<td id="ss-td3" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ formatNumber(answersCount[$index]/totalVotes*100) }}%</td>
 		</tr>
 	</table>
 	<p id="ss-totalVotes">{{totalVotes}} people voted</p>
-	<time-left></time-left>
+	<time-left endDate="poll.endDate"></time-left>
 </div>

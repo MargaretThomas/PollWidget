@@ -2,16 +2,19 @@ var app = angular.module("widgetApp", ["ui.router"])
 app.config(function($stateProvider) {
     $stateProvider
     .state("first", {
-		url: "/firstState",/* Open Poll before voting. */
-        templateUrl : "templates/firstState.html"
+		url: "/firstState/:pollID",/* Open Poll before voting. */
+        templateUrl : "templates/firstState.html", 
+		controller: "loadWidget"
     })
 	.state("second", {
-		url: "/secondState",/* Open Poll after voting. */
-		templateUrl: "templates/secondState.html"
+		url: "/secondState/:pollID",/* Open Poll after voting. */
+		templateUrl: "templates/secondState.html",
+		controller: "loadWidget"
 	})
 	.state("third", {
-		url: "/thirdState",/* Closed Poll. */
-		templateUrl: "templates/thirdState.html"
+		url: "/thirdState/:pollID",/* Closed Poll. */
+		templateUrl: "templates/thirdState.html",
+		controller: "loadWidget"
 	});
 });
 app.factory('myFactory', ['$http',
@@ -46,13 +49,33 @@ app.factory('myFactory', ['$http',
 				alert("failed");
 			});
 		};
+		// Votes for this poll.
+		var castVote = function(objVote){
+			var req = {
+				method: 'POST',
+				url: 'http://pollapi.azurewebsites.net/123/api/AnsResult',
+				headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+				'Access-Control-Allow-Origin': '*'
+				},
+				data: JSON.stringify(objVote)
+			}
+			$http(req).then(function(){
+				alert("Voted");
+			}, function()
+			{
+				alert("not Voted");
+			});
+		}
 		return {
 			funcSpecificPoll: getSpecificPoll,
-			funcVoteCounts: getVoteCounts
+			funcVoteCounts: getVoteCounts,
+			funcCastVote: castVote
 		}
 	}
 ]);
-app.controller('loadWidget', function($scope, $state, myFactory){
+app.controller('loadWidget', function($scope, $state, $stateParams, myFactory){
 	// Determine the state of the widget to display.
 	$scope.determineState = function(){
 		var poll = localStorage.getItem("poll");
@@ -60,20 +83,22 @@ app.controller('loadWidget', function($scope, $state, myFactory){
             var pollDetails = JSON.parse(poll);
 			var pollStatus = pollDetails.status;
 			if(pollStatus == "2"){
-				$state.go("second");
-			} else if(pollStatus == "3"){
-				$state.go("third");
+				$state.go("second", {pollID: pollDetails.poll_guid});
+			} else if(pollStatus == "3"){				
+				console.log("here");
+				$state.go("third", {pollID: pollDetails.poll_guid});
 			}else{
-				$state.go("first");
+				$state.go("first", "a1b30698-c224-4bbe-af2d-3e2fc8b89b1a");
 			}
 		}else{
-			$state.go("first");
+			$state.go("first", "a1b30698-c224-4bbe-af2d-3e2fc8b89b1a");
 		}
 	}
 	// Request data and display in the poll format.
 	$scope.loadOpenPoll = function(){
 		// Calling from the API.
-		var pollID = "c697eb52-ecdb-460e-a0b2-a88653048f94";
+		var pollID = $stateParams.pollID;
+		console.log(pollID);
 		$scope.poll = [];
 		$scope.answersID = [];
 		$scope.answers = [];
@@ -81,6 +106,8 @@ app.controller('loadWidget', function($scope, $state, myFactory){
 		$scope.totalVotes = 0;
 		// Get the Poll Details.
 		myFactory.funcSpecificPoll(function(data){
+			// Clear any old localStorage.
+			localStorage.clear();
 			// Get the poll details.
 			$scope.poll = data;
 			// Store the details in local storage.
@@ -126,6 +153,9 @@ app.controller('loadWidget', function($scope, $state, myFactory){
 			localStorage.setItem("totalVotes", $scope.totalVotes);
 		}, pollID);
 	}
+	$scope.loadTime = function(){
+		$scope.poll = JSON.parse(localStorage.getItem("poll"));
+	}
 	// Load the data from local storage.
 	$scope.loadState = function(){
 		$scope.poll = JSON.parse(localStorage.getItem("poll"));
@@ -136,7 +166,6 @@ app.controller('loadWidget', function($scope, $state, myFactory){
 		$scope.totalVotes = localStorage.getItem("totalVotes");
 	}
 	$scope.formatNumber = function(votes) {
-		return votes.toFixed(1); 
-		//return votes;
+		return votes.toFixed(2);
 	}
 });
