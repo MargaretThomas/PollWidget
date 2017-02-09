@@ -51,7 +51,7 @@ app.factory('myFactory', ['$http',
 		};
 		// Votes for this poll.
 		var castVote = function(objVote){
-			var req = {
+			var request = {
 				method: 'POST',
 				url: 'http://pollapi.azurewebsites.net/123/api/AnsResult',
 				headers: {
@@ -61,17 +61,34 @@ app.factory('myFactory', ['$http',
 				},
 				data: JSON.stringify(objVote)
 			}
-			$http(req).then(function(){
+			$http(request).then(function(){
+				alert(objVote.ansID);
 				alert("Voted");
 			}, function()
 			{
 				alert("not Voted");
 			});
 		}
+		// Get the basic result for the user, after they've voted.
+		var getResults = function(callback, pollID){
+			$http({
+			method: 'GET',
+			url: 'http://pollapi.azurewebsites.net/123/api/AnsResult/Answers/'+pollID,
+			headers: {
+				'Content-Type': 'application/json',
+				'Access-Control-Allow-Origin': '*'
+			},
+			}).then(function successCallback(response) {
+				callback(response.data);
+			}, function errorCallback(response) {
+				alert("failed");
+			});
+		}
 		return {
 			funcSpecificPoll: getSpecificPoll,
 			funcVoteCounts: getVoteCounts,
-			funcCastVote: castVote
+			funcCastVote: castVote,
+			funcGetResults: getResults
 		}
 	}
 ]);
@@ -88,10 +105,10 @@ app.controller('loadWidget', function($scope, $state, $stateParams, myFactory){
 				console.log("here");
 				$state.go("third", {pollID: pollDetails.poll_guid});
 			}else{
-				$state.go("first", "a1b30698-c224-4bbe-af2d-3e2fc8b89b1a");
+				$state.go("first", $stateParams.pollID);
 			}
 		}else{
-			$state.go("first", "a1b30698-c224-4bbe-af2d-3e2fc8b89b1a");
+			$state.go("first", $stateParams.pollID);
 		}
 	}
 	// Request data and display in the poll format.
@@ -153,17 +170,31 @@ app.controller('loadWidget', function($scope, $state, $stateParams, myFactory){
 			localStorage.setItem("totalVotes", $scope.totalVotes);
 		}, pollID);
 	}
-	$scope.loadTime = function(){
-		$scope.poll = JSON.parse(localStorage.getItem("poll"));
-	}
 	// Load the data from local storage.
 	$scope.loadState = function(){
 		$scope.poll = JSON.parse(localStorage.getItem("poll"));
+		var pollID = $scope.poll.poll_guid;
 		$scope.chosenAnswer = localStorage.getItem("chosenAnswer");
 		$scope.answersID = JSON.parse(localStorage.getItem("answersID"));
 		$scope.answers = JSON.parse(localStorage.getItem("answers"));
 		$scope.answersCount = JSON.parse(localStorage.getItem("answersCount"));
 		$scope.totalVotes = localStorage.getItem("totalVotes");
+		
+		myFactory.funcGetResults(function(data){
+			$scope.answersCount = JSON.parse(localStorage.getItem("answersCount"));
+			// Totals for each answer.
+			$scope.answersCount = [];
+			$scope.answersCount.push(data.ans_vote_1);
+			$scope.answersCount.push(data.ans_vote_2);
+			$scope.answersCount.push(data.ans_vote_3);
+			$scope.answersCount.push(data.ans_vote_4);
+			// Percentages for each answer.
+			$scope.answersPerc = [];
+			$scope.answersPerc.push(data.percent1);
+			$scope.answersPerc.push(data.percent2);
+			$scope.answersPerc.push(data.percent3);
+			$scope.answersPerc.push(data.percent4);
+		}, pollID);
 	}
 	$scope.formatNumber = function(votes) {
 		return votes.toFixed(2);

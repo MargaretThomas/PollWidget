@@ -4,7 +4,7 @@ app.directive("answers", function($state, $stateParams, myFactory) {
 		restrict: "E",
 		scope:{
 			data: "=", 
-			ansID: "="
+			answerID: "="
 		},
         templateUrl: "templates/button.html",
 		link: function(scope, elem, attrs){
@@ -14,10 +14,10 @@ app.directive("answers", function($state, $stateParams, myFactory) {
 				poll.status = "2";
 				
 				localStorage.setItem("poll", JSON.stringify(poll));
-				
+				console.log(scope.answerID);
 				// Post vote.
 				var currentDateVoted = new Date();
-				var obj = {"pollGuid": poll.poll_guid,"ansId": scope.ansID,"os_type": "Widget","location": "Durban","manufacturer": navigator.product,"device_model": navigator.appCodeName,"os_version": navigator.platform,"date_voted": currentDateVoted}
+				var obj = {"pollGuid": poll.poll_guid,"ansId": 3,"os_type": "Widget","location": "Durban","manufacturer": navigator.product,"device_model": navigator.appCodeName,"os_version": navigator.platform,"date_voted": currentDateVoted};
 				myFactory.funcCastVote(obj);
 				$state.go("second", {pollID: poll.poll_guid});
 			});

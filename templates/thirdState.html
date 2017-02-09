@@ -12,7 +12,7 @@
 		<tr id="ts-tr" ng-repeat="item in answersID" style="background-color: #FFF;">
 			<td id="ts-td1" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ answers[$index] }}</td>
 			<td id="ts-td2" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ answersCount[$index] }}</td>
-			<td id="ts-td3" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ formatNumber(answersCount[$index]/totalVotes*100) }}%</td>
+			<td id="ts-td3" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ answersPerc[$index] }}%</td>
 		</tr>
 	</table>
 	<p id="ts-totalVotes">{{totalVotes}} people voted</p>
