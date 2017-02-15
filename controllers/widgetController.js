@@ -29,9 +29,9 @@ app.factory('myFactory', ['$http',
 				'Access-Control-Allow-Origin': '*'
 			},
 			}).then(function successCallback(response) {
-				callback(response.data);
+				callback(response);
 			}, function errorCallback(response) {
-				console.log("not there - poll");
+				callback(response);
 			});
 		};
 		// Getting the total votes for each answer
@@ -44,14 +44,14 @@ app.factory('myFactory', ['$http',
 				'Access-Control-Allow-Origin': '*'
 			},
 			}).then(function successCallback(response) {
-				callback(response.data);
+				callback(response);
 			}, function errorCallback(response) {
-				console.log("no answers");
+				callback(response);
 			});
 		};
 		// Votes for this poll.
-		var castVote = function(objVote){
-			var request = {
+		var castVote = function(callback, objVote){ 
+			$http({
 				method: 'POST',
 				url: 'http://pollapi.azurewebsites.net/98b6b223-6849-4c3b-8c50-1f42f26946ed/api/AnsResult',
 				headers: {
@@ -60,10 +60,10 @@ app.factory('myFactory', ['$http',
 				'Access-Control-Allow-Origin': '*'
 				},
 				data: JSON.stringify(objVote)
-			}
-			$http(request).then(function(){
-				alert(objVote.ansID);
-			}, function(){
+			}).then(function successCallback(response) {
+				callback(response);
+			}, function errorCallback(response) {
+				callback(response);
 			});
 		}
 		// Get the basic result for the user, after they've voted.
@@ -76,9 +76,9 @@ app.factory('myFactory', ['$http',
 				'Access-Control-Allow-Origin': '*'
 			},
 			}).then(function successCallback(response) {
-				callback(response.data);
+				callback(response);
 			}, function errorCallback(response) {
-				alert("failed");
+				callback(response);
 			});
 		}
 		return {
@@ -166,9 +166,6 @@ app.controller('loadWidget', function($scope, $state, $stateParams, myFactory){
 			localStorage.setItem("answersCount", JSON.stringify($scope.answersCount));
 			localStorage.setItem("totalVotes", $scope.totalVotes);
 		}, pollID);
-	}
-	$scope.loadTime = function(){
-		$scope.poll = JSON.parse(localStorage.getItem("poll"));
 	}
 	// Load the data from local storage.
 	$scope.loadState = function(){
