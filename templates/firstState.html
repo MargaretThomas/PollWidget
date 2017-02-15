@@ -6,5 +6,7 @@
 	</div>
 	<p id="votesParagraph">{{totalVotes}} people voted</p>
 	<p id="timeParagraph">Time Remaining:</p>
-	<time-left></time-left>
+	<div ng-init="loadTime()">
+		<time-left></time-left>
+	</div>
 </div>

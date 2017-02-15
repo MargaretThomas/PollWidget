@@ -3,8 +3,7 @@ app.directive("answers", function($state, $stateParams, myFactory) {
     return {
 		restrict: "E",
 		scope:{
-			data: "=", 
-			answerID: "="
+			data: "="
 		},
         templateUrl: "templates/button.html",
 		link: function(scope, elem, attrs){
@@ -14,10 +13,17 @@ app.directive("answers", function($state, $stateParams, myFactory) {
 				poll.status = "2";
 				
 				localStorage.setItem("poll", JSON.stringify(poll));
-				console.log(scope.answerID);
+				var ansID = 0;
+				var answers = JSON.parse(localStorage.getItem("answers"));
+				for(var index = 0; index < answers.length; index++){
+					if(answers[index] == scope.data){
+						ansID = index + 1;
+					}
+				}
+				console.log(ansID);
 				// Post vote.
 				var currentDateVoted = new Date();
-				var obj = {"pollGuid": poll.poll_guid,"ansId": 3,"os_type": "Widget","location": "Durban","manufacturer": navigator.product,"device_model": navigator.appCodeName,"os_version": navigator.platform,"date_voted": currentDateVoted};
+				var obj = {"pollGuid": poll.poll_guid,"ansId": ansID,"os_type": "Widget","location": "Durban","manufacturer": navigator.product,"device_model": navigator.appCodeName,"os_version": navigator.platform, "user_name": "000Widget", "user_id": "Anonymous", "date_voted": currentDateVoted};
 				myFactory.funcCastVote(obj);
 				$state.go("second", {pollID: poll.poll_guid});
 			});

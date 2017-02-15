@@ -23,7 +23,7 @@ app.factory('myFactory', ['$http',
 		var getSpecificPoll = function(callback, pollID) {
 			$http({
 			method: 'GET',
-			url: 'http://pollapi.azurewebsites.net/123/api/polls/'+pollID,
+			url: 'http://pollapi.azurewebsites.net/98b6b223-6849-4c3b-8c50-1f42f26946ed/api/polls/'+pollID,
 			headers: {
 				'Content-Type': 'application/json',
 				'Access-Control-Allow-Origin': '*'
@@ -31,14 +31,14 @@ app.factory('myFactory', ['$http',
 			}).then(function successCallback(response) {
 				callback(response.data);
 			}, function errorCallback(response) {
-				alert("failed");
+				console.log("not there - poll");
 			});
 		};
 		// Getting the total votes for each answer
 		var getVoteCounts = function(callback, pollID) {
 			$http({
 			method: 'GET',
-			url: 'http://pollapi.azurewebsites.net/123/api/AnsResult/Answers/'+pollID,
+			url: 'http://pollapi.azurewebsites.net/98b6b223-6849-4c3b-8c50-1f42f26946ed/api/AnsResult/Answers/'+pollID,
 			headers: {
 				'Content-Type': 'application/json',
 				'Access-Control-Allow-Origin': '*'
@@ -46,14 +46,14 @@ app.factory('myFactory', ['$http',
 			}).then(function successCallback(response) {
 				callback(response.data);
 			}, function errorCallback(response) {
-				alert("failed");
+				console.log("no answers");
 			});
 		};
 		// Votes for this poll.
 		var castVote = function(objVote){
 			var request = {
 				method: 'POST',
-				url: 'http://pollapi.azurewebsites.net/123/api/AnsResult',
+				url: 'http://pollapi.azurewebsites.net/98b6b223-6849-4c3b-8c50-1f42f26946ed/api/AnsResult',
 				headers: {
 				'Content-Type': 'application/json',
 				'Accept': 'application/json',
@@ -63,17 +63,14 @@ app.factory('myFactory', ['$http',
 			}
 			$http(request).then(function(){
 				alert(objVote.ansID);
-				alert("Voted");
-			}, function()
-			{
-				alert("not Voted");
+			}, function(){
 			});
 		}
 		// Get the basic result for the user, after they've voted.
 		var getResults = function(callback, pollID){
 			$http({
 			method: 'GET',
-			url: 'http://pollapi.azurewebsites.net/123/api/AnsResult/Answers/'+pollID,
+			url: 'http://pollapi.azurewebsites.net/98b6b223-6849-4c3b-8c50-1f42f26946ed/api/AnsResult/Answers/'+pollID,
 			headers: {
 				'Content-Type': 'application/json',
 				'Access-Control-Allow-Origin': '*'
@@ -124,7 +121,7 @@ app.controller('loadWidget', function($scope, $state, $stateParams, myFactory){
 		// Get the Poll Details.
 		myFactory.funcSpecificPoll(function(data){
 			// Clear any old localStorage.
-			localStorage.clear();
+			window.localStorage.clear();
 			// Get the poll details.
 			$scope.poll = data;
 			// Store the details in local storage.
@@ -169,6 +166,9 @@ app.controller('loadWidget', function($scope, $state, $stateParams, myFactory){
 			localStorage.setItem("answersCount", JSON.stringify($scope.answersCount));
 			localStorage.setItem("totalVotes", $scope.totalVotes);
 		}, pollID);
+	}
+	$scope.loadTime = function(){
+		$scope.poll = JSON.parse(localStorage.getItem("poll"));
 	}
 	// Load the data from local storage.
 	$scope.loadState = function(){
