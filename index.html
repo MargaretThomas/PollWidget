@@ -3,10 +3,8 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> 
 	<script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
 	<script src="controllers/widgetController.js"></script>
-	<script src="directives/widgetDirectives.js"></script> 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
-	
-	<div ng-app="widgetApp" id="southpollWidgetBody" ng-controller="loadWidget" ng-init="determineState()" >
+	<script src="directives/widgetDirectives.js"></script> 	
+	<div ng-app="widgetApp" id="southpollWidgetBody" ng-controller="loadWidget" ng-init="determineState()" style="text-align:center">
 		<!-- Placeholder for the different states of the poll. -->
 		<div ui-view></div>
 	</div>

@@ -1,7 +1,7 @@
 <div id="sp-FirstState" ng-controller="loadWidget" ng-init="loadOpenPoll()">
 	<h2 id="fs-h2" style="font-weight: bold;color: #000;">{{poll.poll_title}}</h2>
 	<h4 id="fs-h4" style="font-weight: bold;color: #000;">Question: {{poll.poll_description}}</h4>
-	<div id="fs-div" ng-repeat="x in answers">
+	<div id="fs-div" ng-repeat="x in answers" align="center">
 		<answers data="x"></answers>
 	</div>
 	<p id="votesParagraph">{{totalVotes}} people voted</p>

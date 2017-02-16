@@ -11,7 +11,8 @@ app.directive("answers", function($state, $stateParams, myFactory) {
 				// Save poll information once the user has voted.
 				var poll = JSON.parse(localStorage.getItem("poll"));
 				poll.status = "2";
-				
+				// Chosen answer.
+				localStorage.setItem("chosenAnswer", scope.data);
 				localStorage.setItem("poll", JSON.stringify(poll));
 				var ansID = 0;
 				var answers = JSON.parse(localStorage.getItem("answers"));
@@ -24,8 +25,11 @@ app.directive("answers", function($state, $stateParams, myFactory) {
 				// Post vote.
 				var currentDateVoted = new Date();
 				var obj = {"pollGuid": poll.poll_guid,"ansId": ansID,"os_type": "Widget","location": "Durban","manufacturer": navigator.product,"device_model": navigator.appCodeName,"os_version": navigator.platform, "user_name": "000Widget", "user_id": "Anonymous", "date_voted": currentDateVoted};
-				myFactory.funcCastVote(obj);
-				$state.go("second", {pollID: poll.poll_guid});
+				myFactory.funcCastVote(function(response){
+					if(response.status >= 200 && response.status < 300){
+						$state.go("second", {pollID: poll.poll_guid});
+					}
+				}, obj);
 			});
 		}
     };
@@ -34,9 +38,6 @@ app.directive("answers", function($state, $stateParams, myFactory) {
 app.directive('timeLeft', ['$interval', 'dateFilter', '$state', function($interval, dateFilter, $state) {
   return {
 	restrict: "E",
-	scope:{
-		endDate: "=" // End Date of the poll.
-	},
 	link: function (scope, elem, attrs) {
 		var format = "dd/MM/yyyy h:mm:ss a";
 		var timeoutId;
@@ -65,7 +66,6 @@ app.directive('timeLeft', ['$interval', 'dateFilter', '$state', function($interv
 				if(difference_ms <= 0){
 					poll.pollStatus = "Closed";
 					localStorage.setItem("poll", JSON.stringify(poll));	
-				console.log("here");
 					$state.go("third", {pollID: poll.poll_guid});
 				}else{
 					//take out milliseconds
