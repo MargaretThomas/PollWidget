@@ -46,7 +46,7 @@ app.directive('timeLeft', ['$interval', 'dateFilter', '$state', function($interv
 			var endDate = new Date(poll.end_date);
 			var endDateStr = endDate.toString();
 			var actualEndDate;
-			var extraHours;
+			var extraHours = 0;
 			var hoursInMinutes;
 			// Extract the time difference.
 			if(endDateStr.indexOf("+") != -1){

@@ -15,6 +15,11 @@ app.config(function($stateProvider) {
 		url: "/thirdState/:pollID",/* Closed Poll. */
 		templateUrl: "templates/thirdState.html",
 		controller: "loadWidget"
+	})
+	.state("error", {
+		url: "/errorState/", /* Error handling */
+		templateUrl: "templates/errorState.html",
+		controller: "loadWidget"
 	});
 });
 app.factory('myFactory', ['$http',
@@ -74,27 +79,50 @@ app.factory('myFactory', ['$http',
 	}
 ]);
 app.controller('loadWidget', function($scope, $state, $stateParams, myFactory){
+	// Display start state.
+	$state.loadStart = function(){
+		$state.go("start");
+	}
 	// Determine the state of the widget to display.
 	$scope.determineState = function(){
-		var poll = localStorage.getItem("poll");
+		var time = 10000;
+		setTimeout(function(){
+			alert("Hello"); 
+			var poll = localStorage.getItem("poll");
 		if(poll){
+			console.log("valid local poll");
             var pollDetails = JSON.parse(poll);
-			var pollStatus = pollDetails.status;
-			if(pollStatus == "2"){
-				$state.go("second", {pollID: pollDetails.poll_guid});
-			} else if(pollStatus == "3"){	
-				$state.go("third", {pollID: pollDetails.poll_guid});
+			if(pollDetails.poll_guid == $stateParams.pollID){
+				console.log("equal guid");
+				var pollStatus = pollDetails.status;
+				if(pollStatus == "2"){
+					console.log("state 2");
+					$state.go("second", {pollID: pollDetails.poll_guid});
+				} else if(pollStatus == "3"){	
+				console.log("state 3");
+					$state.go("third", {pollID: pollDetails.poll_guid});
+				}else{
+					console.log("state 1");
+					$state.go("first", $stateParams.pollID);
+				}
 			}else{
+				console.log(" not equal guid");
 				$state.go("first", $stateParams.pollID);
+				console.log($stateParams.pollID);
 			}
 		}else{
+			console.log("no poll");
+				console.log($stateParams.pollID);
 			$state.go("first", $stateParams.pollID);
 		}
+		}, time);
+		console.log($stateParams.pollID);		
 	}
 	// Request data and display in the poll format.
 	$scope.loadOpenPoll = function(){
 		// Calling from the API.
 		var pollID = $stateParams.pollID;
+		
 		$scope.poll = [];
 		$scope.answersID = [];
 		$scope.answers = [];
@@ -135,6 +163,11 @@ app.controller('loadWidget', function($scope, $state, $stateParams, myFactory){
 				// Store answers details in localStorage.
 				localStorage.setItem("answersID", JSON.stringify($scope.answersID));
 				localStorage.setItem("answers", JSON.stringify($scope.answers));
+			}else{
+				window.localStorage.clear();
+				var message = "Unable to retrieve the poll details. Please ensure that the poll exists.";
+				localStorage.setItem("errorMessage", message);
+				$state.go("error");
 			}
 		}, pollID);
 		
@@ -152,6 +185,11 @@ app.controller('loadWidget', function($scope, $state, $stateParams, myFactory){
 				// Store the vote count for each answer.
 				localStorage.setItem("answersCount", JSON.stringify($scope.answersCount));
 				localStorage.setItem("totalVotes", $scope.totalVotes);
+			}else{
+				window.localStorage.clear();
+				var message = "Unable to retrieve the answer counts. Please ensure that the poll exists.";
+				localStorage.setItem("errorMessage", message);
+				$state.go("error");
 			}
 		}, pollID);
 	}
@@ -162,35 +200,47 @@ app.controller('loadWidget', function($scope, $state, $stateParams, myFactory){
 	// Load the data from local storage.
 	$scope.loadState = function(){
 		$scope.poll = JSON.parse(localStorage.getItem("poll"));
-		var pollID = $scope.poll.poll_guid;
-		$scope.chosenAnswer = localStorage.getItem("chosenAnswer");
-		$scope.answersID = JSON.parse(localStorage.getItem("answersID"));
-		$scope.answers = JSON.parse(localStorage.getItem("answers"));
-		
-		myFactory.funcVoteCounts(function(response){
-			if(response.status >= 200 && response.status < 300){
-				var data = response.data;
-				// Totals for each answer.
-				$scope.answersCount = [];
-				$scope.answersCount.push(data.ans_vote_1);
-				$scope.answersCount.push(data.ans_vote_2);
-				$scope.answersCount.push(data.ans_vote_3);
-				$scope.answersCount.push(data.ans_vote_4);
-				// Percentages for each answer.
-				$scope.answersPerc = [];
-				$scope.answersPerc.push(data.percent1);
-				$scope.answersPerc.push(data.percent2);
-				$scope.answersPerc.push(data.percent3);
-				$scope.answersPerc.push(data.percent4);
-				$scope.totalVotes = 0;
-				for(var index=0;index<$scope.answersCount.length;index++){
-					$scope.totalVotes = $scope.totalVotes + $scope.answersCount[index];
-					
+		if($scope.poll){
+			var pollID = $scope.poll.poll_guid;
+			$scope.chosenAnswer = localStorage.getItem("chosenAnswer");
+			$scope.answersID = JSON.parse(localStorage.getItem("answersID"));
+			$scope.answers = JSON.parse(localStorage.getItem("answers"));
+			
+			myFactory.funcVoteCounts(function(response){
+				if(response.status >= 200 && response.status < 300){
+					var data = response.data;
+					// Totals for each answer.
+					$scope.answersCount = [];
+					$scope.answersCount.push(data.ans_vote_1);
+					$scope.answersCount.push(data.ans_vote_2);
+					$scope.answersCount.push(data.ans_vote_3);
+					$scope.answersCount.push(data.ans_vote_4);
+					// Percentages for each answer.
+					$scope.answersPerc = [];
+					$scope.answersPerc.push(data.percent1);
+					$scope.answersPerc.push(data.percent2);
+					$scope.answersPerc.push(data.percent3);
+					$scope.answersPerc.push(data.percent4);
+					$scope.totalVotes = 0;
+					for(var index=0;index<$scope.answersCount.length;index++){
+						$scope.totalVotes = $scope.totalVotes + $scope.answersCount[index];
+						
+					}
+					// Store the vote count for each answer.
+					localStorage.setItem("answersCount", JSON.stringify($scope.answersCount));
+					localStorage.setItem("totalVotes", $scope.totalVotes);
+				}else{
+					window.localStorage.clear();
+					var message = "Unable to get the latest vote counts. Please ensure that the poll exists.";
+					localStorage.setItem("errorMessage", message);
+					$state.go("error");
 				}
-				// Store the vote count for each answer.
-				localStorage.setItem("answersCount", JSON.stringify($scope.answersCount));
-				localStorage.setItem("totalVotes", $scope.totalVotes);
-			}
-		}, pollID);
+			}, pollID);
+		}else{
+			$state.go("error");
+		}
+	}
+	$scope.loadErrorMessage = function(){
+		$scope.errorMessage = localStorage.getItem("errorMessage");
 	}
 });

@@ -6,10 +6,10 @@
 	<h4 id="ts-h4" style="font-weight: bold;color: #000;">Question: {{poll.question}}</h4>
 	<p id="ts-SelectedAnswer" >You selected: {{chosenAnswer}}</p>
 	<table id="ts-table" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; width: 50px;height: 50px;border-radius: 6px;" align="center">
-		<th id="ts-th1" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; background-color: #E85D22;">Answers</th>
-		<th id="ts-th2" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; background-color: #E85D22;">Count</th>
-		<th id="ts-th3" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; background-color: #E85D22;">Percentages</th>
-		<tr id="ts-tr" ng-repeat="item in answersID" style="background-color: #FFF;">
+		<th id="ts-th1" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; background-color: #E85D22; color: #FFF">Answers</th>
+		<th id="ts-th2" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; background-color: #E85D22; color: #FFF">Count</th>
+		<th id="ts-th3" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center; background-color: #E85D22; color: #FFF">Percentages</th>
+		<tr id="ts-tr" ng-repeat="item in answersID" style="background-color: #FFE6CC;">
 			<td id="ts-td1" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ answers[$index] }}</td>
 			<td id="ts-td2" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ answersCount[$index] }}</td>
 			<td id="ts-td3" style="border: 1px solid grey;border-collapse: collapse;padding: 5px;text-align: center;">{{ answersPerc[$index] }}%</td>
